@@ -1,0 +1,2 @@
+Place the company logo (download https://ashokaminfotech.vercel.app/assets/logo.jpg) in this folder named logo.jpg.
+Until then the portal loads it from the live website; if offline it shows an AK badge.

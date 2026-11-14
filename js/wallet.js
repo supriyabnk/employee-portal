@@ -1,0 +1,6 @@
+function wallet(){const m=ME(),rows=S.pay.filter(p=>p.empId===m.id&&p.mode==='Wallet').sort((a,b)=>a.date.localeCompare(b.date));let run=0;
+ const body=rows.map(p=>{run+=p.type==='Credit'?p.amount:-p.amount;return{p,run}}).reverse(),in_=rows.filter(p=>p.type==='Credit').reduce((a,p)=>a+p.amount,0),out=rows.filter(p=>p.type==='Debit').reduce((a,p)=>a+p.amount,0);
+ $('#app').innerHTML=`<h1>My Wallet</h1><p class="sub">Funds held in your company wallet. To withdraw to your bank, ask your manager.</p>
+ <div class="grid g4"><div class="card stat" style="background:var(--pri2)"><b>${money(in_-out)}</b><span>Available balance</span></div><div class="card stat"><b class="cr">${money(in_)}</b><span>Money in</span></div><div class="card stat"><b class="db">${money(out)}</b><span>Money out</span></div></div>
+ <div class="card tw">${body.length?`<table><tr><th>Date</th><th>Details</th><th>Amount</th><th>Balance</th></tr>${body.map(({p,run})=>`<tr><td>${p.date}</td><td>${H(p.cat)}${p.note?` · ${H(p.note)}`:''}<br><small style="color:var(--mut)">${H(p.ref)}</small></td><td class="${p.type==='Credit'?'cr':'db'}">${p.type==='Credit'?'+':'−'} ${money(p.amount)}</td><td>${money(run)}</td></tr>`).join('')}</table>`:'<div class="empty">No wallet transactions yet.</div>'}</div>`}
+if(ME())wallet();
