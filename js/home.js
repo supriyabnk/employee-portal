@@ -2,7 +2,7 @@ function home(){const m=ME(),k=m.id+'|'+today,r=S.att[k]||{},i=dayInfo(m.id,toda
  const bal=S.pay.filter(p=>p.empId===m.id&&p.mode==='Wallet').reduce((a,p)=>a+(p.type==='Credit'?p.amount:-p.amount),0);
  const last=S.pay.filter(p=>p.empId===m.id&&p.type==='Credit').sort((a,b)=>b.date.localeCompare(a.date))[0];
  const ns=myNotes().slice(0,3),hol=Object.entries(S.hol).filter(([d])=>d>=today).sort().slice(0,3);
- const can=!S.hol[today]&&r.status!=='leave'&&!(r.in&&r.out),lab=r.in?'Check out':'Check in';
+ const can=i.k!=='nj'&&!S.hol[today]&&r.status!=='leave'&&!(r.in&&r.out),lab=r.in?'Check out':'Check in';
  $('#app').innerHTML=`<h1>Hello, ${H(m.name.split(' ')[0])} 👋</h1><p class="sub">${new Date().toDateString()} · ${H(m.pos||m.type)}</p>
  <div class="grid g2"><div class="card"><label>Today</label><div class="big">${r.in?`In ${H(r.in)}${r.out?' · Out '+H(r.out):''}`:H(i.t||'Not checked in')}</div>
  <p>${r.method?`<span class="pill pr">${H(r.method)}</span>`:''}${S.hol[today]?`<span class="pill hl">Holiday: ${H(S.hol[today])}</span>`:''}</p>

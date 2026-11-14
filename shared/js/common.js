@@ -14,13 +14,15 @@ const uid=()=>Math.random().toString(36).slice(2,9);
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const today=iso(new Date()),money=n=>'NPR '+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 const emp=id=>S.emps.find(e=>e.id===id);
-const isWk=ds=>new Date(ds+'T00:00').getDay()===6; // Saturday weekly off in Nepal
+const isWk=ds=>[0,6].includes(new Date(ds+'T00:00').getDay()); // Weekly off: Saturday and Sunday
 const ui={tab:'cal',emp:'',month:today.slice(0,7),date:today,q:''};
 async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 const avatar=e=>e.photo?`<img class="av" src="${e.photo}" alt="">`:`<span class="av">${H((e.name||'?')[0])}</span>`;
 const bioPills=e=>BIO.map(b=>`<span class="pill ${e.bio?.[b]?'ok':'no'}">${b}</span>`).join('');
 // day status: holiday > leave/present/absent record > weekend > none
+const isNJ=(id,ds)=>{const j=emp(id)?.join;return !!j&&ds<j};
 function dayInfo(id,ds){const r=S.att[id+'|'+ds];
+ if(isNJ(id,ds))return{k:'nj',t:'Not joined',r};
  if(S.hol[ds])return{k:'holiday',t:S.hol[ds],r};
  if(r?.status==='leave')return{k:'leave',t:'Leave',r};
  if(r?.in)return{k:'present',t:'Present',r};

@@ -37,3 +37,4 @@ dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);co
 .login form{text-align:left;display:grid;gap:12px;margin-top:16px}.err{color:var(--bad);font-size:13px;min-height:18px}
 .note{border-left:4px solid var(--line);padding:10px 14px;margin-bottom:10px;background:var(--card);border-radius:0 12px 12px 0;border:1px solid var(--line);border-left-width:4px}.note.new{border-left-color:var(--pri);background:var(--pri2)}
 .note small{color:var(--mut)}.big{font-size:28px;font-weight:700}.punch{font-size:16px;padding:12px 22px}
+.day.nj{background:repeating-linear-gradient(45deg,var(--wk),var(--wk) 6px,var(--card) 6px,var(--card) 12px);color:var(--mut)}
