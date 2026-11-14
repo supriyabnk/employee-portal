@@ -39,13 +39,17 @@ const unread=()=>{const m=ME();return m?myNotes().filter(n=>!(n.read||{})[m.id])
 const PAGES=[['dashboard','index.html','Dashboard'],['employees','employees.html','Employees'],['attendance','attendance.html','Attendance'],['payroll','payroll.html','Stipend &amp; Salary'],['notices','notices.html','Notices &amp; Leaves']];
 const EPAGES=[['home','home.html','Home'],['profile','profile.html','Profile'],['attendance','attendance.html','Attendance'],['salary','salary.html','Salary'],['wallet','wallet.html','Wallet'],['notifications','notifications.html','Notifications']];
 const PAGE=document.body.dataset.page;
-if(!(EP&&PAGE==='login')){const L=EP?EPAGES:PAGES,n=unread();
-document.body.insertAdjacentHTML('afterbegin',`<header><div class="bar"><a class="brand" href="${L[0][1]}" style="text-decoration:none;color:inherit">${logo()}<div>Ashokam Infotech<small>${EP?'Employee Portal':'Admin Portal'}</small></div></a><nav id="nav">${L.map(p=>`<a href="${p[1]}" class="${p[0]===PAGE?'on':''}">${p[2]}${p[0]==='notifications'&&n?` <span class="pill no">${n}</span>`:''}</a>`).join('')}</nav><button id="th" class="s">Theme</button>${EP?'<button id="lo" class="s">Log out</button>':''}</div></header>`);
-if(EP)$('#lo').onclick=()=>{try{sessionStorage.removeItem('ashokam_emp')}catch(e){}location.href='index.html'}}
-else document.body.insertAdjacentHTML('afterbegin','<div style="text-align:right;padding:10px"><button id="th" class="s">Theme</button></div>');
+const toggleTheme=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches),n=d?'light':'dark';r.dataset.theme=n;try{localStorage.setItem('ashokam_theme',n)}catch(e){}};
+const logout=()=>{try{sessionStorage.removeItem('ashokam_emp')}catch(e){}location.href='index.html'};
+if(!(EP&&PAGE==='login')){const L=EP?EPAGES:PAGES,n=unread(),tb=`<button class="s" data-th>Theme</button>${EP?'<button class="s" data-lo>Log out</button>':''}`;
+document.body.insertAdjacentHTML('afterbegin',`<header><div class="bar"><button id="mb" class="mb" aria-label="Open menu" aria-expanded="false">☰</button><a class="brand" href="${L[0][1]}" style="text-decoration:none;color:inherit">${logo()}<div>Ashokam Infotech<small>${EP?'Employee Portal':'Admin Portal'}</small></div></a><div id="ov" class="ov"></div><nav id="nav"><div class="nh"><b>Menu</b><button id="mc" class="s" aria-label="Close menu">✕</button></div>${L.map(p=>`<a href="${p[1]}" class="${p[0]===PAGE?'on':''}">${p[2]}${p[0]==='notifications'&&n?` <span class="pill no">${n}</span>`:''}</a>`).join('')}<div class="nf">${tb}</div></nav><div class="dsk">${tb}</div></div></header>`);
+const setNav=o=>{document.body.classList.toggle('nav-open',o);$('#mb').setAttribute('aria-expanded',o)};
+$('#mb').onclick=()=>setNav(true);$('#mc').onclick=()=>setNav(false);$('#ov').onclick=()=>setNav(false);addEventListener('keydown',e=>e.key==='Escape'&&setNav(false));
+if(EP)document.querySelectorAll('[data-lo]').forEach(b=>b.onclick=logout)}
+else document.body.insertAdjacentHTML('afterbegin','<div style="text-align:right;padding:10px"><button data-th class="s">Theme</button></div>');
 if(EP&&PAGE!=='login'&&!ME())location.replace('index.html');
 try{const t=localStorage.getItem('ashokam_theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
-$('#th').onclick=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches),n=d?'light':'dark';r.dataset.theme=n;try{localStorage.setItem('ashokam_theme',n)}catch(e){}};
+document.querySelectorAll('[data-th]').forEach(b=>b.onclick=toggleTheme);
 function render(){window.__page&&window.__page()}
 const empOpts=(sel,all)=>(all?'<option value="">All employees</option>':'')+S.emps.map(e=>`<option value="${e.id}" ${e.id===sel?'selected':''}>${H(e.name)}</option>`).join('');
 function open(h){const d=$('#dlg');d.innerHTML=h;d.showModal()}const close=()=>$('#dlg').close();

@@ -1,6 +1,6 @@
 function att(){const m=ME(),[y,mo]=ui.month.split('-').map(Number),first=new Date(y,mo-1,1).getDay(),n=new Date(y,mo,0).getDate(),st=stat(m.id,ui.month);
  let cells=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="h">${d}</div>`).join('')+'<div class="day blank"></div>'.repeat(first);
- for(let d=1;d<=n;d++){const ds=ui.month+'-'+String(d).padStart(2,'0'),i=dayInfo(m.id,ds),r=i.r;cells+=`<div class="day ${i.k}" data-d="${ds}"><b>${d}</b><br>${i.k==='present'?`${H(r.in)}–${H(r.out||'…')}<br>${H(r.method||'')}`:H(i.t)}</div>`}
+ for(let d=1;d<=n;d++){const ds=ui.month+'-'+String(d).padStart(2,'0'),i=dayInfo(m.id,ds),r=i.r;cells+=`<div class="day ${i.k}" data-d="${ds}"><b>${d}</b><br>${i.k==='present'?`<span class="tm">${H(r.in)}<span class="o">–${H(r.out||'…')}</span></span><br><span class="mt">${H(r.method||'')}</span>`:`<span class="ht">${H(i.t)}</span>`}</div>`}
  const mine=S.leaves.filter(l=>l.empId===m.id).sort((a,b)=>b.date.localeCompare(a.date)),cls={Pending:'wn',Approved:'ok',Rejected:'no'};
  $('#app').innerHTML=`<h1>My Attendance</h1><p class="sub">Tap a day for details. Holidays approved by the company count as positive days.</p>
  <div class="card"><div class="row"><div><label>Month</label><input type="month" id="sm" value="${ui.month}"></div></div>
